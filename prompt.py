@@ -20,8 +20,8 @@ Company: {company}
 Campaign/Event: {event}
 Campaign Title: {title}
 
-Campaign Message: {campaign_message} if campaign_message is long text then don't use it in image"
-
+Campaign Message: {campaign_message}
+Use Campaign Message: {campaign_message} both in images if possible to create strong association.
 Product essence:
 {description}
 
@@ -53,7 +53,7 @@ Purpose or goal of this campaign:
 
 Avoid if not mentioned:
 - Text overlays, logos, or watermarks
--Donnot channge color of logo
+- Do not channge color of logo
 - Do NOT place any text, typography, logo, or brand name over a human face, head, hair, eyes, mouth.
 - If you don't know logo, do NOT hallucinate a logo; leave it out.
 """.strip()
@@ -63,11 +63,17 @@ Avoid if not mentioned:
             return (
                 base + " Professional corporate design, clean minimal layout, ample whitespace, "
                 "subtle gradients, premium look, safe margins (keep key elements within center 70%)."
+                "If it is university-related, emphasize academic or research themes.\n"
+                "if it is business university-related, emphasize business professional themes.\n"
+                "You can use small fonts for text if it fits the design, but do NOT place any text over a human face, head, hair, eyes, or mouth."
             )
         case "instagram":
             return (
                 base + " Modern vibrant aesthetic, bold composition, lifestyle-friendly look, "
-                "rich visuals, high contrast, trendy but clean, safe margins."
+                "rich visuals, high contrast, trendy but clean, safe margins.",
+                "You can use small fonts for text if it fits the design, but do NOT place any text over a human face, head, hair, eyes, or mouth."
+
+                
             )
         case "facebook":
             return (
@@ -92,13 +98,16 @@ def build_caption_prompt(platform: str, company: str, event: str, title: str, de
         context += f" Product: {product}"
     if call_to_action:
         context += f" Call to action: {call_to_action}"
-
+    
     match platform.lower():
         case "linkedin":
             return (
                 f"Write {n} professional LinkedIn captions for: {context}\n"
                 "- 3–5 lines each\n- confident, business-friendly\n- include 3–8 relevant hashtags\n"
+                "If it is university-related, emphasize academic or research themes.\n"
+                "if it is business  university-related, emphasize business professional themes.\n"
                 "- avoid excessive emojis\nReturn each caption separated by a blank line."
+                
                 "IMPORTANT:\n"
                 "- Do NOT use separators like '---' or '***'.\n"
                 "- Do NOT add markdown dividers.\n"
